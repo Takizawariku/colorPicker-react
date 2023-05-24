@@ -1,10 +1,25 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import ColorList from './ColorList'
-import Color from './Color'
+import OnColor from './OnColor'
+import Header from './Components/Header'
+import './css/Input.css'
 
 const Input = () => {
     const [colors, setColors] = useState([])
+    const [onColor, setOnColor] = useState()
+    const [hue, setHue] = useState(0)
+    const [saturation, setSaturation] = useState(0)
+    const [lightness, setLightness] = useState(0)
+    const [HSL, setHSL] = useState({ hue, saturation, lightness })
+
     const pickTextRef = useRef()
+
+    useEffect(()=>{
+         if(hue === saturation ===lightness){
+
+         }
+
+     },[hue,saturation,lightness])
 
     const startDrop = () => {
         const resultElement = document.getElementById('result')
@@ -34,18 +49,76 @@ const Input = () => {
             return [...prevColor, { id: "1", colorName: colorName }]
         })
         pickTextRef.current.value = null
+    }
+
+    const onKeyUp = (event) => {
+        const onColorText = event.target.value
+        setOnColor(onColorText)
+    }
+
+    const handleHChange = (event) => {
+        const rangeHue = event.target.value
+        setHue(rangeHue)
+        // setHSL(HSL.hue=hue)
+    }
+    const handleSChange = (event) => {
+        const rangeSaturation = event.target.value
+        setSaturation(rangeSaturation)
+        // setHSL(HSL.saturation=saturation)
 
     }
+    const handleLChange = (event) => {
+        const rangeLightness = event.target.value
+        setLightness(rangeLightness)
+        // setHSL(HSL.lightness=lightness)
+    }
+
+    const colorObj = {
+        background: "#000000",
+        height: '20px',
+        width: '20px',
+        float: 'left'
+      };
+
+    // console.log(hue,saturation,lightness)
+
     return (
         <div>
-            <button onClick={startDrop}>search color</button>
-            ＜ー他のタブで色を探す
-            <div id='result'></div>
+            <Header></Header>
 
-            カラーコードを入力例FFFFF
-            <input type="text" ref={pickTextRef}></input>
+            <div className='button__container'>
+            <button onClick={startDrop} className='button'>search color</button>
+            {/* ＜ー他のタブで色を探す */}
+            </div>
+
+            カラーコードを入力例FFFFF <br />
+            <input type="text" ref={pickTextRef} onKeyUp={onKeyUp} className='textbox'></input>
+
+            <OnColor onColor={onColor} hue={hue} saturation={saturation} lightness={lightness}/>
+            {console.log()}
+            <br />
+            hue:<input type='range' max='360' value={hue} onInput={handleHChange}></input>
+            saturation:<input type='range' value={saturation} onInput={handleSChange}></input>
+            lightness<input type='range' value={lightness} onInput={handleLChange}></input>
+
+            
             <button onClick={handlePick}>check</button>
-            <ColorList colors={colors} />
+
+            {/* <input type="color" name="" id="" /> */}
+
+            <hr />
+
+            <table>
+                <tbody>
+                <tr>
+                    <td style={colorObj}></td>
+                    <td>HEX</td>
+                    <td>RGB</td>
+                    <td>HSL</td>
+                </tr>
+                <ColorList colors={colors} />
+                </tbody>
+            </table>
 
         </div>
     )

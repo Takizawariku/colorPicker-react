@@ -32,7 +32,7 @@ const EyeDrop = () => {
       <button onClick={startDrop}>search color</button>
       ＜ー他のタブで色を探す
       <div id='result'>{eyeDropColors}</div>
-      <ColorList eyeDropColor={eyeDropColors} />
+      {/* <ColorList eyeDropColor={eyeDropColors} /> */}
     </div>
   )
 }
